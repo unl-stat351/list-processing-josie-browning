@@ -43,6 +43,8 @@ library(tidyr)
 library(stringr)
 library(ggplot2)
 library(tibble)
+library(httr)
+library(purrr)
 
 drwho1963 <- read_json("drwho-766.json")
 drwho2005 <- read_json("drwho-210.json")
@@ -318,7 +320,7 @@ ggplot(whoverse, aes(x = air_time_num, fill = factor(showID))) +
     fill = "Show")
 
 ```
-The first graph shows us that the majority of the airtimes were in the evening. The original 1963 Dr Who and The Sarah JAne Adventures were normally shown at 5:15 pm, with some exceptions aired at 6:25. My best guess was this was due to important events being aired on those days so the time slot was delayed. The 2005 show was mostly aired at 7:35 pm with some variation. The 2023 version of Dr Who was released on a streaming service and not aired on scheduled programming, so the airtimes are set to midnight or 8:00 am. TorchWood was aired at 9:00 pm, which would be the earliest time slot to air a "mature" show. The TorchWood: Web of Lies series is an animated web-series that was not aired on traditional TV, so the "airtimes" were not recorded. 
+The first graph shows us that the majority of the airtimes were in the evening. The original 1963 Dr Who and The Sarah Jane Adventures were normally shown at 5:15 pm, with some exceptions aired at 6:25. My best guess was this was due to important events being aired on those days so the time slot was delayed. The 2005 show was mostly aired at 7:35 pm with some variation. The 2023 version of Dr Who was released on a streaming service and not aired on scheduled programming, so the airtimes are set to midnight or 8:00 am. TorchWood was aired at 9:00 pm, which would be the earliest time slot to air a "mature" show. The TorchWood: Web of Lies series is an animated web-series that was not aired on traditional TV, so the "airtimes" were not recorded. 
 The selection of these time tells us that the main Dr Who shows were aimed at a general audience, which shifted with how the majority of audiences watch media. The 1963 show aired earlier than the 2005 show which may indicate the producers trying to target a younger audience (young adult/teens) that might stay up later. The newer shows are not aired on traditional TV at all, which definitely reflected how audiences use more streaming services now. The main Torchwood show was late in the evening due to the content restrictions, since the target audience did not include children. 
 
 
@@ -331,10 +333,26 @@ You should use a functional programming approach when reading in these files.
 ------------------------------------------------------------------------
 
 ```{r}
-show_urls <- files %>%
-  map_dfr(~ tibble(
-    file = .x,
-    show_url = fromJSON(.x, flatten = TRUE)$`_links.show.href`))
+links <- whoverse %>%
+    select(show_link, show_name, showID)
+
+unique_urls <- links %>% 
+    pull(show_link) %>% 
+    unique()
+
+fetch_json <- function(u) {
+  res <- GET(u)
+  stop_for_status(res) # throw error if request fails
+  content(res, as = "text", encoding = "UTF-8") %>%
+    fromJSON(flatten = TRUE)
+}
+
+show_data_list <- unique_urls %>%
+  set_names() %>% 
+  map(fetch_json)
+
+json_links <- links %>%
+  mutate(show_json = map(show_link, ~ show_data_list[[.x]]))
 
 ```
 
@@ -345,7 +363,40 @@ Process the JSON files using a functional approach and construct an appropriate 
 ------------------------------------------------------------------------
 
 ```{r}
+#extract lists
+json_to_tibble <- function(x) {
+    nested <- discard(x, ~ length(.x) == 1 && !is.list(.x)) #wrap into list
+    nested <- map(nested, list)
+    tibble(!!!scalars, !!!nested)
+}
 
+normalize_field <- function(x) {
+  if (is.null(x)) {NA} #replace Nulls with NAs
+      else {list(x)}
+}
+
+#Convert to tibble rows
+json_to_tibble <- function(x) {
+  tibble::as_tibble_row(map(x, normalize_field))
+}
+
+# Apply to all shows, binding rows safely
+show_eps <- map_dfr(show_data_list, json_to_tibble, .id = "show_link")
+
+show_eps_wide <- show_eps %>%
+    unnest_wider(genres, names_sep = "_") %>%
+    unnest_wider(schedule, names_sep = "_") %>%
+    unnest_wider(schedule_days, names_sep = "_") %>%
+    unnest_wider(rating, names_sep = "_") %>%
+    unnest_wider(network, names_sep = "_") %>%
+    unnest_wider(network_country, names_sep = "_") %>%
+    unnest_wider(webChannel, names_sep = "_") %>%
+    unnest_wider(webChannel_country, names_sep = "_") %>%
+    unnest_wider(externals, names_sep = "_") %>%
+    unnest_wider(image, names_sep = "_") %>%
+    unnest_wider(`_links`, names_sep = "_") %>%
+    unnest_wider(`_links_self`, names_sep = "_") %>%
+    unnest_wider(`_links_previousepisode`, names_sep = "_")
 ```
 
 ------------------------------------------------------------------------
@@ -353,7 +404,7 @@ Process the JSON files using a functional approach and construct an appropriate 
 What keys would you use to join this data with the `whoverse` episode level data?
 Explain.
 
-> Explanation
+> I would use the show_link column since that consistant for all episodes within each show. 
 
 ## Explore!
 
