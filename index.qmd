@@ -156,7 +156,7 @@ Make an ordered list of steps you need to take.
 1.  Read the json files as dataframes
 2.  Add a column for showID to each dataframe
 3.  Join the 3 shows into one single dataframe
-4.  
+4.  Convert variable types
 
 ## Implement Your Strategy
 
@@ -213,21 +213,21 @@ shows_clean <- shows_clean %>%
 
 
 ggplot(shows_clean, aes(x = time_diff, fill = factor(showID))) +
-  geom_histogram(binwidth = 4, color = "black") +
-  labs(
-    title = "Time Gap Between Episodes",
-    x = "Time Difference (days)",
-    y = "Count")
+    geom_histogram(binwidth = 4, color = "black") +
+    labs(
+        title = "Time Gap Between Episodes",
+        x = "Time Difference (days)",
+        y = "Count")
 
 no_outlier <- shows_clean %>%
     filter(!time_diff > 80)
 
 ggplot(no_outlier, aes(x = time_diff, fill = factor(showID))) +
-  geom_histogram(binwidth = 4, color = "black") +
-  labs(
-    title = "Time Gap Between Episodes (No Outlier)",
-    x = "Time Difference (days)",
-    y = "Count")
+    geom_histogram(binwidth = 4, color = "black") +
+    labs(
+        title = "Time Gap Between Episodes (No Outlier)",
+        x = "Time Difference (days)",
+        y = "Count")
 ```
 
 ------------------------------------------------------------------------
@@ -254,8 +254,8 @@ library(purrr)
 files <- c("drwho-210.json", "drwho-766.json", "drwho-72724.json", "sarahjane-970.json", "torchwood-659.json", "torchwood-26694.json")
 
 all_data <- files %>%
-  map(fromJSON) %>%
-  bind_rows()
+    map(fromJSON) %>%
+    bind_rows()
 ```
 
 ------------------------------------------------------------------------
@@ -308,16 +308,16 @@ How can you explain any shows in the Dr. Who universe which do not have airtimes
 
 ```{r, warning=FALSE}
 whoverse <- whoverse %>%
-  mutate(
-    air_time_num = hour(hms(paste0(airtime, ":00"))) + minute(hms(paste0(airtime, ":00"))) / 60)
+    mutate(
+        air_time_num = hour(hms(paste0(airtime, ":00"))) + minute(hms(paste0(airtime, ":00"))) / 60)
 
 ggplot(whoverse, aes(x = air_time_num, fill = factor(showID))) +
-  geom_histogram(binwidth = 1, color = "black") +
-  labs(
-    title = "Distribution of Episode Airtimes by Show",
-    x = "Hour of Day",
-    y = "Episode Count",
-    fill = "Show")
+    geom_histogram(binwidth = 1, color = "black") +
+    labs(
+        title = "Distribution of Episode Airtimes by Show",
+        x = "Hour of Day",
+        y = "Episode Count",
+        fill = "Show")
 
 ```
 The first graph shows us that the majority of the airtimes were in the evening. The original 1963 Dr Who and The Sarah Jane Adventures were normally shown at 5:15 pm, with some exceptions aired at 6:25. My best guess was this was due to important events being aired on those days so the time slot was delayed. The 2005 show was mostly aired at 7:35 pm with some variation. The 2023 version of Dr Who was released on a streaming service and not aired on scheduled programming, so the airtimes are set to midnight or 8:00 am. TorchWood was aired at 9:00 pm, which would be the earliest time slot to air a "mature" show. The TorchWood: Web of Lies series is an animated web-series that was not aired on traditional TV, so the "airtimes" were not recorded. 
@@ -341,18 +341,18 @@ unique_urls <- links %>%
     unique()
 
 fetch_json <- function(u) {
-  res <- GET(u)
-  stop_for_status(res) # throw error if request fails
-  content(res, as = "text", encoding = "UTF-8") %>%
-    fromJSON(flatten = TRUE)
+    res <- GET(u)
+    stop_for_status(res) # throw error if request fails
+    content(res, as = "text", encoding = "UTF-8") %>%
+        fromJSON(flatten = TRUE)
 }
 
 show_data_list <- unique_urls %>%
-  set_names() %>% 
-  map(fetch_json)
+    set_names() %>% 
+    map(fetch_json)
 
 json_links <- links %>%
-  mutate(show_json = map(show_link, ~ show_data_list[[.x]]))
+    mutate(show_json = map(show_link, ~ show_data_list[[.x]]))
 
 ```
 
@@ -371,13 +371,13 @@ json_to_tibble <- function(x) {
 }
 
 normalize_field <- function(x) {
-  if (is.null(x)) {NA} #replace Nulls with NAs
-      else {list(x)}
+    if (is.null(x)) {NA} #replace Nulls with NAs
+        else {list(x)}
 }
 
 #Convert to tibble rows
 json_to_tibble <- function(x) {
-  tibble::as_tibble_row(map(x, normalize_field))
+    tibble::as_tibble_row(map(x, normalize_field))
 }
 
 # Apply to all shows, binding rows safely
@@ -418,8 +418,52 @@ Or, look at the episode guest cast by appending `/guestcast/` to the episode URL
 
 ------------------------------------------------------------------------
 
-Question goes here
+How do the ratings change over time for each show?
 
 ------------------------------------------------------------------------
 
-Code goes here -- once you output a result, you should explain it using markdown text, and then start a new code chunk to continue your exploration.
+```{r, warning=FALSE}
+#reformat data so I can compare it between shows
+ratings <- whoverse %>%
+    select(season, number, airdate, avg_rating, show_name, show_link, showID) %>%
+    mutate(id = str_extract(show_link, "\\d+"))
+
+overall_avg_rating <- show_eps_wide %>%
+    select(id, name, rating_average)
+
+ratings_monthly <- ratings %>%
+    mutate(month_year = floor_date(ymd(airdate), "month")) %>%
+    group_by(show_name, showID, month_year) %>%
+    summarise(monthly_avg = mean(avg_rating, na.rm = TRUE), .groups = "drop",
+              id = id,
+              season = season)
+
+ggplot(ratings_monthly, aes(x = month_year, y = monthly_avg)) +
+    geom_line(color = "steelblue") +
+    geom_point(size = 0.5) +
+    facet_wrap(~ show_name, scales = "free_x") +
+    labs(
+        title = "Average Episode Rating Over Time",
+        x = "Show Timeline",
+        y = "Average Monthly Ratings"
+    ) 
+    ```
+
+This visual is facet-wrapped by show over the course of the show. Note that the timelines are very different since Dr Who is a much longer running show. At first glance it seems like Dr Who might have the overall highest rating, but I want to split the data up by the three sections of the show's run. 
+
+```{r}
+drwho_ratings <- ratings_monthly %>%
+    filter(show_name == "Doctor Who")
+
+ggplot(drwho_ratings, aes(x = month_year, y = monthly_avg)) +
+    geom_line(color = "steelblue") +
+    geom_point(aes(color = factor(showID)), size = 2) +
+    labs(
+        title = "Average Episode Rating Over Time (Dr Who)",
+        x = "Show Timeline",
+        y = "Average Monthly Ratings",
+        color = "Show ID")
+
+```
+
+Looking at the difference between the show averages, it looks like the average monthly rating peaked during the 2005 run, but was much more consistent during the original 1963 run. We can see the clear gap in when the show stopped running. The more recent run in comparison did not do as well as the other two shows. It makes sense that a show that is constantly changing it's main character and cast would have huge variability in ratings. Based on the ratings towards the end of the first and second runs might be an obvious indicator as to why the show runners chose to cancel the show. Although comparatively the first run was consistently rated better than the other two runs. 
