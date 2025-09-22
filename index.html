@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Josie Browning">
+
+<title>Lab: List Processing</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab: List Processing</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Josie Browning </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="callout callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>You can see the purpose of this assignment as well as the skills and knowledge you should be using and acquiring, in the <a href="tilt.qmd">Transparency in Learning and Teaching (TILT)</a> document in this repository. The TILT document also contains a checklist for self-reflection that will provide some guidance on how the assignment will be graded.</p>
+</div>
+</div>
+</div>
+<section id="data-source" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Data Source</h1>
+<p>JSON data files for this assignment were obtained from the TVMaze API for three different Doctor Who series as well as two different spin-offs.</p>
+<ul>
+<li>Dr.&nbsp;Who <a href="https://www.tvmaze.com/shows/72724/doctor-who">2023-2025</a></li>
+<li>Dr.&nbsp;Who <a href="https://www.tvmaze.com/shows/210/doctor-who">2005-2022</a></li>
+<li>Dr.&nbsp;Who <a href="https://www.tvmaze.com/shows/766/doctor-who">1963-1996</a></li>
+<li><a href="https://www.tvmaze.com/shows/970/the-sarah-jane-adventures">The Sarah Jane Adventures (2007-2020)</a></li>
+<li><a href="https://www.tvmaze.com/shows/659/torchwood">Torchwood (2006-2011)</a></li>
+<li><a href="https://www.tvmaze.com/shows/26694/torchwood-web-of-lies">Torchwood: Web of Lies (2011)</a></li>
+</ul>
+</section>
+<section id="warming-up" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Warming Up</h1>
+<p>For this portion of the assignment, only work with the canonical Dr.&nbsp;Who files (drwho2023.json, drwho2005.json, drwho1963.json).</p>
+<section id="parse-the-file" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="parse-the-file"><span class="header-section-number">2.1</span> Parse the file</h2>
+<p>Add a code chunk that will read each of the JSON files in. Store the data in a <code>drwhoYYYY</code> object, where <code>YYYY</code> is the first year the series began to air. How are the data objects stored?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(jsonlite)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>drwho1963 <span class="ot">&lt;-</span> <span class="fu">read_json</span>(<span class="st">"drwho-766.json"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>drwho2005 <span class="ot">&lt;-</span> <span class="fu">read_json</span>(<span class="st">"drwho-210.json"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>drwho2023 <span class="ot">&lt;-</span> <span class="fu">read_json</span>(<span class="st">"drwho-72724.json"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>These data objects are stored as lists. The two longer portions of the shows are stored as “large lists” since there is a significant amount of elements.</p>
+</section>
+<section id="examining-list-data-structures" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="examining-list-data-structures"><span class="header-section-number">2.2</span> Examining List Data Structures</h2>
+<p>Create a nested markdown list showing what variables are nested at each level of the JSON file. Include an ‘episode’ object that is a stand-in for a generic episode (e.g.&nbsp;don’t create a list with all 700+ episodes in it, just show what a single episode has). Make sure you use proper markdown formatting to ensure that the lists are rendered properly when you compile your document.</p>
+<p>Hint: The <code>prettify()</code> function in the R package <code>jsonlite</code> will spit out a better-formatted version of a JSON file.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">prettify</span>(<span class="fu">readLines</span>(<span class="st">"drwho-210.json"</span>), <span class="at">indent=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>Show</p>
+<ul>
+<li><p>Episode</p>
+<ul>
+<li><p>Episode ID</p></li>
+<li><p>URL</p></li>
+<li><p>Name/title</p></li>
+<li><p>Season number</p></li>
+<li><p>Type (regular or special)</p></li>
+<li><p>Air date</p></li>
+<li><p>Air time</p></li>
+<li><p>Air stamp</p></li>
+<li><p>Run time</p></li>
+<li><p>Rating</p>
+<ul>
+<li>Average rating</li>
+</ul></li>
+<li><p>Image</p>
+<ul>
+<li><p>Medium</p></li>
+<li><p>Original</p></li>
+</ul></li>
+<li><p>Summary</p></li>
+<li><p>Links</p>
+<ul>
+<li><p>Self</p>
+<ul>
+<li>Href</li>
+</ul></li>
+<li><p>Show</p>
+<ul>
+<li><p>Href</p></li>
+<li><p>Name</p></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<hr>
+<p>Is there any information stored in the list structure that you feel is redundant? If so, why?</p>
+<p>I think that it is redundant to have the average rating being stored in it’s own list. There is only one item in the list for the rating, so it seems unnecessary. The same can be said for the way that the links are nested in their own lists.</p>
+</section>
+<section id="develop-a-strategy" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="develop-a-strategy"><span class="header-section-number">2.3</span> Develop A Strategy</h2>
+<p>Consider what information you would need to examine the structure of Dr.&nbsp;Who episodes over time (show run time, season length, specials) as well as the ratings, combining information across all three data files.</p>
+<p>Sketch one or more rectangular data tables that look like your expected output. Remember that if you link to an image, you must link to something with a picture extension (<code>.png</code>, <code>.jpg</code>), and if you reference a file it should be using a local path and you must also add the picture to your git repository.</p>
+<hr>
+<p><img src="images/IMG_6552.jpeg" class="img-fluid"></p>
+<p>Show ID:</p>
+<ol type="1">
+<li><p>Dr.&nbsp;Who 1963</p></li>
+<li><p>Dr.&nbsp;Who 2005</p></li>
+<li><p>Dr.&nbsp;Who 2023</p></li>
+<li><p>The Sarah Jane Adventures 2007</p></li>
+<li><p>Torchwood 2006</p></li>
+<li><p>Torchwood 2011</p></li>
+</ol>
+<hr>
+<p>What operations will you need to perform to get the data into a form matching your sketch? Make an ordered list of steps you need to take.</p>
+<hr>
+<ol type="1">
+<li>Read the json files as dataframes</li>
+<li>Add a column for showID to each dataframe</li>
+<li>Join the 3 shows into one single dataframe</li>
+<li></li>
+</ol>
+</section>
+<section id="implement-your-strategy" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="implement-your-strategy"><span class="header-section-number">2.4</span> Implement Your Strategy</h2>
+<p>Add a code chunk that will convert the JSON files into the table(s) you sketched above. Make sure that the resulting tables have the correct variable types (e.g., dates should not be stored as character variables).</p>
+<p>Print out the first 5 rows of each table that you create (but no more)!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>show1 <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"drwho-766.json"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>show2 <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"drwho-210.json"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>show3 <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="st">"drwho-72724.json"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>show1 <span class="ot">&lt;-</span> show1 <span class="sc">%&gt;%</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">showID =</span> <span class="dv">1</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>show2 <span class="ot">&lt;-</span> show2 <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">showID =</span> <span class="dv">2</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>show3 <span class="ot">&lt;-</span> show3 <span class="sc">%&gt;%</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">showID =</span> <span class="dv">3</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>shows <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(show1, show2, show3)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>shows <span class="ot">&lt;-</span> shows <span class="sc">%&gt;%</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">airdate =</span> <span class="fu">ymd</span>(airdate),</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">airstamp =</span> <span class="fu">ymd_hms</span>(airstamp))</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(shows, <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     id
+1 67360
+2 67361
+3 67362
+4 67363
+5 67364
+                                                                                                     url
+1   https://www.tvmaze.com/episodes/67360/doctor-who-1x01-an-unearthly-child-an-unearthly-child-part-one
+2   https://www.tvmaze.com/episodes/67361/doctor-who-1x02-the-cave-of-skulls-an-unearthly-child-part-two
+3 https://www.tvmaze.com/episodes/67362/doctor-who-1x03-the-forest-of-fear-an-unearthly-child-part-three
+4       https://www.tvmaze.com/episodes/67363/doctor-who-1x04-the-firemaker-an-unearthly-child-part-four
+5              https://www.tvmaze.com/episodes/67364/doctor-who-1x05-the-dead-planet-the-daleks-part-one
+                                                 name season number    type
+1   An Unearthly Child (An Unearthly Child, Part One)      1      1 regular
+2   The Cave of Skulls (An Unearthly Child, Part Two)      1      2 regular
+3 The Forest of Fear (An Unearthly Child, Part Three)      1      3 regular
+4       The Firemaker (An Unearthly Child, Part Four)      1      4 regular
+5              The Dead Planet (The Daleks, Part One)      1      5 regular
+     airdate airtime            airstamp runtime average
+1 1963-11-23   17:15 1963-11-23 17:15:00      25     8.1
+2 1963-11-30   17:15 1963-11-30 17:15:00      25     7.2
+3 1963-12-07   17:15 1963-12-07 17:15:00      25     7.1
+4 1963-12-14   17:15 1963-12-14 17:15:00      25     7.4
+5 1963-12-21   17:15 1963-12-21 17:15:00      25     7.6
+                                                             image.medium
+1  https://static.tvmaze.com/uploads/images/medium_landscape/22/55779.jpg
+2 https://static.tvmaze.com/uploads/images/medium_landscape/50/125284.jpg
+3 https://static.tvmaze.com/uploads/images/medium_landscape/50/125433.jpg
+4 https://static.tvmaze.com/uploads/images/medium_landscape/50/125760.jpg
+5  https://static.tvmaze.com/uploads/images/medium_landscape/22/55782.jpg
+                                                             image.original
+1  https://static.tvmaze.com/uploads/images/original_untouched/22/55779.jpg
+2 https://static.tvmaze.com/uploads/images/original_untouched/50/125284.jpg
+3 https://static.tvmaze.com/uploads/images/original_untouched/50/125433.jpg
+4 https://static.tvmaze.com/uploads/images/original_untouched/50/125760.jpg
+5  https://static.tvmaze.com/uploads/images/original_untouched/22/55782.jpg
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     summary
+1 &lt;p&gt;Barbara Wright and Ian Chesterton, two humble teachers during 1963, are surprised by a bright student named Susan Foreman. Feeling inquisitive of her upbringing, they seek out her residence to learn who nurtured such a genius. There, they discover a junkyard inhabited by her grandfather, simply known as "the Doctor", and he doesn't want them lurking about.&lt;/p&gt;&lt;p&gt;When the teachers refuse to leave, they discover that an ordinary police box is actually bigger on the inside. The Doctor decides they know too much about his and Susan's otherworldly origins and takes them on a journey across space and time in his TARDIS, the place he and Susan now call home.&lt;/p&gt;
+2 &lt;p&gt;Barbara Wright and Ian Chesterton, two humble teachers during 1963, are surprised by a bright student named Susan Foreman. Feeling inquisitive of her upbringing, they seek out her residence to learn who nurtured such a genius. There, they discover a junkyard inhabited by her grandfather, simply known as "the Doctor", and he doesn't want them lurking about.&lt;/p&gt;&lt;p&gt;When the teachers refuse to leave, they discover that an ordinary police box is actually bigger on the inside. The Doctor decides they know too much about his and Susan's otherworldly origins and takes them on a journey across space and time in his TARDIS, the place he and Susan now call home.&lt;/p&gt;
+3 &lt;p&gt;Barbara Wright and Ian Chesterton, two humble teachers during 1963, are surprised by a bright student named Susan Foreman. Feeling inquisitive of her upbringing, they seek out her residence to learn who nurtured such a genius. There, they discover a junkyard inhabited by her grandfather, simply known as "the Doctor", and he doesn't want them lurking about.&lt;/p&gt;&lt;p&gt;When the teachers refuse to leave, they discover that an ordinary police box is actually bigger on the inside. The Doctor decides they know too much about his and Susan's otherworldly origins and takes them on a journey across space and time in his TARDIS, the place he and Susan now call home.&lt;/p&gt;
+4 &lt;p&gt;Barbara Wright and Ian Chesterton, two humble teachers during 1963, are surprised by a bright student named Susan Foreman. Feeling inquisitive of her upbringing, they seek out her residence to learn who nurtured such a genius. There, they discover a junkyard inhabited by her grandfather, simply known as "the Doctor", and he doesn't want them lurking about.&lt;/p&gt;&lt;p&gt;When the teachers refuse to leave, they discover that an ordinary police box is actually bigger on the inside. The Doctor decides they know too much about his and Susan's otherworldly origins and takes them on a journey across space and time in his TARDIS, the place he and Susan now call home.&lt;/p&gt;
+5                                                                                                                                               &lt;p&gt;The TARDIS has brought the travellers to the planet Skaro where they meet two indigenous races — the Daleks, malicious mutant creatures encased in armoured travel machines, and the Thals, beautiful humanoids with pacifist principles. They convince the Thals of the need to fight for their own survival.&lt;/p&gt;&lt;p&gt;Joining forces with them and braving Skaro's many dangers, they launch a two-pronged attack on the Dalek city. The Daleks are all killed when, during the course of the fighting, their power supply is cut off.&lt;/p&gt;
+                            _links.href                 _links.show.href
+1 https://api.tvmaze.com/episodes/67360 https://api.tvmaze.com/shows/766
+2 https://api.tvmaze.com/episodes/67361 https://api.tvmaze.com/shows/766
+3 https://api.tvmaze.com/episodes/67362 https://api.tvmaze.com/shows/766
+4 https://api.tvmaze.com/episodes/67363 https://api.tvmaze.com/shows/766
+5 https://api.tvmaze.com/episodes/67364 https://api.tvmaze.com/shows/766
+  _links.show.name showID
+1       Doctor Who      1
+2       Doctor Who      1
+3       Doctor Who      1
+4       Doctor Who      1
+5       Doctor Who      1</code></pre>
+</div>
+</div>
+</section>
+<section id="examining-episode-air-dates" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="examining-episode-air-dates"><span class="header-section-number">2.5</span> Examining Episode Air Dates</h2>
+<p>Visually represent the length of time between air dates of adjacent episodes within the same season, across all seasons of Dr.&nbsp;Who. You may need to create a factor to indicate which Dr.&nbsp;Who series is indicated, as there will be a Season 1 for each of the series. Your plot must have appropriate labels and a title.</p>
+<hr>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>shows_clean <span class="ot">&lt;-</span> shows <span class="sc">%&gt;%</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(id, name, season, number, airdate, airtime, airstamp, showID, type) <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">number =</span> <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, number), <span class="co">#make all the formats from 1 to 01 so ID are same digit length</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">season =</span> <span class="fu">sprintf</span>(<span class="st">"%02d"</span>, season),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">ID_season_ep =</span> <span class="fu">paste</span>(showID, season, number, <span class="at">sep=</span><span class="st">""</span>)) <span class="co">#should keep a chronological order for all episodes</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>shows_clean <span class="ot">&lt;-</span> shows_clean <span class="sc">%&gt;%</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>(showID) <span class="sc">%&gt;%</span> <span class="co">#sort the data to ensure correct order </span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(<span class="at">show_season =</span> <span class="fu">substr</span>(ID_season_ep, <span class="dv">1</span>, <span class="dv">3</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>( <span class="co">#lag makes the first episode produce an NA instead of finding the difference </span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">time_diff =</span> <span class="fu">as.numeric</span>(<span class="fu">difftime</span>(airstamp, <span class="fu">lag</span>(airstamp), <span class="at">units =</span> <span class="st">"days"</span>)), </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">time_diff =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(time_diff), <span class="dv">3</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ungroup</span>()</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(shows_clean, <span class="fu">aes</span>(<span class="at">x =</span> time_diff, <span class="at">fill =</span> <span class="fu">factor</span>(showID))) <span class="sc">+</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">4</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Time Gap Between Episodes"</span>,</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Time Difference (days)"</span>,</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 47 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>no_outlier <span class="ot">&lt;-</span> shows_clean <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span>time_diff <span class="sc">&gt;</span> <span class="dv">80</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(no_outlier, <span class="fu">aes</span>(<span class="at">x =</span> time_diff, <span class="at">fill =</span> <span class="fu">factor</span>(showID))) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">4</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Time Gap Between Episodes (No Outlier)"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Time Difference (days)"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<hr>
+<p>In 2-3 sentences, explain what conclusions you might draw from the data. What patterns do you notice? Are there data quality issues?</p>
+<p>This does not include the gap between epsiodes from different seasons. There are two outliers. One in 2012/2013 of Season 7 where there is an 182 day gap in the middle of a season, the second one in 2011 of Season 6 with a 84 day gap. The second graph is with that outliers removed to see the data better. It looks like a general pattern of 7 days between episodes, especially in the 1963 and 2005 shows where they were airing on TV. It also seems like a handful of epsiodes from seasons 19, 20, and 21 were released with only one day gap inbetween.</p>
+</section>
+</section>
+<section id="timey-wimey-series-and-episodes" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Timey-Wimey Series and Episodes</h1>
+<section id="setting-up" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="setting-up"><span class="header-section-number">3.1</span> Setting Up</h2>
+<p>In this section of the assignment, you will work with all of the provided JSON files. Use a functional programming approach to read in all of the files and bind them together.</p>
+<hr>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'purrr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:jsonlite':
+
+    flatten</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"drwho-210.json"</span>, <span class="st">"drwho-766.json"</span>, <span class="st">"drwho-72724.json"</span>, <span class="st">"sarahjane-970.json"</span>, <span class="st">"torchwood-659.json"</span>, <span class="st">"torchwood-26694.json"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>all_data <span class="ot">&lt;-</span> files <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map</span>(fromJSON) <span class="sc">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p>Then, use the processing code you wrote for the previous section to perform appropriate data cleaning steps. At the end of the chunk, your data should be in a reasonably tidy, rectangular form with appropriate data types. Call this rectangular table <code>whoverse</code>.</p>
+<hr>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>all_data_clean <span class="ot">&lt;-</span> all_data <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">avg_rating =</span> rating<span class="sc">$</span>average,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">medium_image =</span> image<span class="sc">$</span>medium,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">original_image =</span> image<span class="sc">$</span>original,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>        <span class="at">self_link =</span> <span class="st">`</span><span class="at">_links</span><span class="st">`</span><span class="sc">$</span>self<span class="sc">$</span>href,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>        <span class="at">show_link =</span> <span class="st">`</span><span class="at">_links</span><span class="st">`</span><span class="sc">$</span>show<span class="sc">$</span>href,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">show_name =</span> <span class="st">`</span><span class="at">_links</span><span class="st">`</span><span class="sc">$</span>show<span class="sc">$</span>name) <span class="sc">%&gt;%</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>rating, <span class="sc">-</span>image, <span class="sc">-</span><span class="st">`</span><span class="at">_links</span><span class="st">`</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">summary =</span> summary <span class="sc">%&gt;%</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>            <span class="fu">str_replace_all</span>(<span class="st">"&lt;p&gt;"</span>, <span class="st">" "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>            <span class="fu">str_replace_all</span>(<span class="st">"&lt;/p&gt;"</span>, <span class="st">""</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">airdate =</span> <span class="fu">ymd</span>(airdate),</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">airstamp =</span> <span class="fu">ymd_hms</span>(airstamp))</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>whoverse <span class="ot">&lt;-</span> all_data_clean <span class="sc">%&gt;%</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">showID =</span> <span class="fu">case_when</span>(</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>            show_name <span class="sc">==</span> <span class="st">"Doctor Who"</span> <span class="sc">&amp;</span> <span class="fu">year</span>(airdate) <span class="sc">&lt;</span> <span class="dv">2000</span> <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>            show_name <span class="sc">==</span> <span class="st">"Doctor Who"</span> <span class="sc">&amp;</span> <span class="fu">year</span>(airdate) <span class="sc">&gt;=</span> <span class="dv">2005</span> <span class="sc">&amp;</span> <span class="fu">year</span>(airdate) <span class="sc">&lt;</span> <span class="dv">2022</span> <span class="sc">~</span> <span class="dv">2</span>,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>            show_name <span class="sc">==</span> <span class="st">"Doctor Who"</span> <span class="sc">&amp;</span> <span class="fu">year</span>(airdate) <span class="sc">&gt;=</span> <span class="dv">2023</span> <span class="sc">~</span> <span class="dv">3</span>,</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>            show_name <span class="sc">==</span> <span class="st">"The Sarah Jane Adventures"</span> <span class="sc">~</span> <span class="dv">4</span>,</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>            show_name <span class="sc">==</span> <span class="st">"Torchwood"</span> <span class="sc">~</span> <span class="dv">5</span>,</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>            show_name <span class="sc">==</span> <span class="st">"Torchwood: Web of Lies"</span> <span class="sc">~</span> <span class="dv">6</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">showID =</span> <span class="fu">replace_na</span>(showID, <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+</section>
+<section id="air-time" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="air-time"><span class="header-section-number">3.2</span> Air Time</h2>
+<p>Investigate the air time of the episodes relative to the air date, series, and season. It may help to know that the <a href="https://en.wikipedia.org/wiki/Watershed_(broadcasting)">watershed</a> period in the UK is 9:00pm - 5:30am. Content that is unsuitable for minors may only be shown during this window. What conclusions do you draw about the target audience for each show?</p>
+<p>How can you explain any shows in the Dr.&nbsp;Who universe which do not have airtimes provided?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>whoverse <span class="ot">&lt;-</span> whoverse <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">air_time_num =</span> <span class="fu">hour</span>(<span class="fu">hms</span>(<span class="fu">paste0</span>(airtime, <span class="st">":00"</span>))) <span class="sc">+</span> <span class="fu">minute</span>(<span class="fu">hms</span>(<span class="fu">paste0</span>(airtime, <span class="st">":00"</span>))) <span class="sc">/</span> <span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There were 2 warnings in `mutate()`.
+The first warning was:
+ℹ In argument: `air_time_num = +...`.
+Caused by warning in `.parse_hms()`:
+! Some strings failed to parse
+ℹ Run `dplyr::last_dplyr_warnings()` to see the 1 remaining warning.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(whoverse, <span class="fu">aes</span>(<span class="at">x =</span> air_time_num, <span class="at">fill =</span> <span class="fu">factor</span>(showID))) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribution of Episode Airtimes by Show"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Hour of Day"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Episode Count"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Show"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 10 rows containing non-finite outside the scale range
+(`stat_bin()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The first graph shows us that the majority of the airtimes were in the evening. The original 1963 Dr Who and The Sarah JAne Adventures were normally shown at 5:15 pm, with some exceptions aired at 6:25. My best guess was this was due to important events being aired on those days so the time slot was delayed. The 2005 show was mostly aired at 7:35 pm with some variation. The 2023 version of Dr Who was released on a streaming service and not aired on scheduled programming, so the airtimes are set to midnight or 8:00 am. TorchWood was aired at 9:00 pm, which would be the earliest time slot to air a “mature” show. The TorchWood: Web of Lies series is an animated web-series that was not aired on traditional TV, so the “airtimes” were not recorded. The selection of these time tells us that the main Dr Who shows were aimed at a general audience, which shifted with how the majority of audiences watch media. The 1963 show aired earlier than the 2005 show which may indicate the producers trying to target a younger audience (young adult/teens) that might stay up later. The newer shows are not aired on traditional TV at all, which definitely reflected how audiences use more streaming services now. The main Torchwood show was late in the evening due to the content restrictions, since the target audience did not include children.</p>
+</section>
+<section id="another-layer-of-json" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="another-layer-of-json"><span class="header-section-number">3.3</span> Another Layer of JSON</h2>
+<p>Use the show URL (<code>_links</code> &gt; <code>show</code> &gt; <code>href</code>) to read in the JSON file for each show. As with scraping, it is important to be polite and not make unnecessary server calls, so pre-process the data to ensure that you only make one server call for each show. You should use a functional programming approach when reading in these files.</p>
+<hr>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>show_urls <span class="ot">&lt;-</span> files <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_dfr</span>(<span class="sc">~</span> <span class="fu">tibble</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">file =</span> .x,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">show_url =</span> <span class="fu">fromJSON</span>(.x, <span class="at">flatten =</span> <span class="cn">TRUE</span>)<span class="sc">$</span><span class="st">`</span><span class="at">_links.show.href</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p>Process the JSON files using a functional approach and construct an appropriate table for the combined data you’ve acquired during this step (no need to join the data with the full <code>whoverse</code> episode-level data).</p>
+<hr>
+<div class="cell">
+
+</div>
+<hr>
+<p>What keys would you use to join this data with the <code>whoverse</code> episode level data? Explain.</p>
+<blockquote class="blockquote">
+<p>Explanation</p>
+</blockquote>
+</section>
+<section id="explore" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="explore"><span class="header-section-number">3.4</span> Explore!</h2>
+<p>Use the data you’ve assembled to answer a question you find interesting about this data. Any graphics you make should have appropriate titles and axis labels. Tables should be reasonably concise (e.g.&nbsp;don’t show all 900 episodes in a table), generated in a reproducible fashion, and formatted with markdown. Any results (graphics, tables, models) should be explained with at least 2-3 sentences.</p>
+<p>If you’re stuck, consider examining the frequency of words in the episode descriptions across different series or seasons. Or, look at the episode guest cast by appending <code>/guestcast/</code> to the episode URL and see whether there are common guests across different seasons.</p>
+<hr>
+<p>Question goes here</p>
+<hr>
+<p>Code goes here – once you output a result, you should explain it using markdown text, and then start a new code chunk to continue your exploration.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
