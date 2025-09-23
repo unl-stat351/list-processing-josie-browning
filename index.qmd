@@ -375,12 +375,11 @@ normalize_field <- function(x) {
         else {list(x)}
 }
 
-#Convert to tibble rows
 json_to_tibble <- function(x) {
     tibble::as_tibble_row(map(x, normalize_field))
 }
 
-# Apply to all shows, binding rows safely
+
 show_eps <- map_dfr(show_data_list, json_to_tibble, .id = "show_link")
 
 show_eps_wide <- show_eps %>%
